@@ -1,10 +1,16 @@
 import csv
 import codecs
+from constants import DEFAULT_ENCODING, DEFAULT_DELIMITER
 
 
 class StoresParser(object):
 
-    def __init__(self, file_path, encoding='utf-8-sig', delimiter='\t'):
+    def __init__(
+            self,
+            file_path,
+            encoding=DEFAULT_ENCODING,
+            delimiter=DEFAULT_DELIMITER
+            ):
         self.file_path = file_path
         self.encoding = encoding
         self.delimiter = delimiter
@@ -45,5 +51,5 @@ class StoresParser(object):
     def get_dict(self):
         with codecs.open(self.file_path, 'r', encoding=self.encoding) as f:
             reader = csv.DictReader(f, delimiter=self.delimiter)
-            self.dict = [r for r in reader]
+            self.dict = list(reader)
         return self.dict
