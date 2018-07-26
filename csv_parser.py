@@ -51,5 +51,5 @@ class StoresParser(object):
     def get_dict(self):
         with codecs.open(self.file_path, 'r', encoding=self.encoding) as f:
             reader = csv.DictReader(f, delimiter=self.delimiter)
-            self.dict = [r for r in reader]
+            self.dict = list(reader)
         return self.dict
