@@ -1,6 +1,7 @@
 import math
 import json
 from decimal import Decimal, ROUND_HALF_UP
+import geocoder
 from constants import (
     DEFAULT_UNITS,
     DISTANCE_PRECISION,
@@ -10,6 +11,12 @@ from constants import (
     DISTANCE_RADIUS,
     STORE_FIELDS
 )
+
+
+def geocode(address):
+    # TODO(Austin) Add optional parameter for provider
+    g = geocoder.google(address)
+    return g.latlng
 
 
 def validate_args(args):
