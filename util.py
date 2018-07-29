@@ -5,6 +5,8 @@ from constants import DEFAULT_UNITS
 
 def format_result(result, distance, units, output):
     if output == 'text':
+        if result is None or distance is None:
+            return 'Unable to locate closest store.'
         formatted_result = (
             "Closest store is {} - {}, located in {} "
             "at {}, {}, {} {}. ({:0.2f}{})"
@@ -20,6 +22,9 @@ def format_result(result, distance, units, output):
             units
         )
     else:
+        if result is None or distance is None:
+            print('Unable to locate closest store.')
+            return {}
         result['Distance'] = '{}{}'.format(distance, units)
         formatted_result = json.dumps(result)
     return formatted_result
