@@ -1,6 +1,15 @@
 import math
 import json
-from constants import DEFAULT_UNITS
+from decimal import Decimal, ROUND_HALF_UP
+from constants import DEFAULT_UNITS, DISTANCE_PRECISION
+
+
+def format_distance(distance, precision=DISTANCE_PRECISION):
+    d = Decimal(distance)
+    prec = '0.' + ''.join(
+        ['0' if x < (precision - 1) else '1' for x in range(precision)]
+    )
+    return Decimal(d.quantize(Decimal(prec), rounding=ROUND_HALF_UP))
 
 
 def format_result(result, distance, units, output):
@@ -9,7 +18,7 @@ def format_result(result, distance, units, output):
             return 'Unable to locate closest store.'
         formatted_result = (
             "Closest store is {} - {}, located in {} "
-            "at {}, {}, {} {}. ({:0.2f}{})"
+            "at {}, {}, {} {}. ({} {})"
             ).format(
             result['Store Name'],
             result['Store Location'],
@@ -18,14 +27,14 @@ def format_result(result, distance, units, output):
             result['City'],
             result['State'],
             result['Zip Code'],
-            distance,
+            format_distance(distance),
             units
         )
     else:
         if result is None or distance is None:
             print('Unable to locate closest store.')
             return {}
-        result['Distance'] = '{}{}'.format(distance, units)
+        result['Distance'] = '{} {}'.format(format_distance(distance), units)
         formatted_result = json.dumps(result)
     return formatted_result
 

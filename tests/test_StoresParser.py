@@ -13,7 +13,7 @@ class TestStoresParser(unittest.TestCase):
         self.assertEqual(self.sp.encoding, 'utf-8-sig')
 
     def test_delimiter(self):
-        self.assertEqual(self.sp.delimiter, '\t')
+        self.assertEqual(self.sp.delimiter, ',')
 
     def test_dict_initial(self):
         self.assertEqual(self.sp.dict, None)

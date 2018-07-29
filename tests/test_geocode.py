@@ -12,7 +12,7 @@ class TestGeocode(unittest.TestCase):
 
     def test_invalid_address(self):
         self.assertEqual(
-            geocode('123 Lancy Ave, Billings, MT 59201'),
+            geocode(''),
             None
         )
 

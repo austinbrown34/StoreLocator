@@ -5,3 +5,4 @@ DEFAULT_ENCODING = 'utf-8-sig'
 DEFAULT_DELIMITER = ','
 UNITS = ['mi', 'km']
 OUTPUT = ['text', 'json']
+DISTANCE_PRECISION = 2
