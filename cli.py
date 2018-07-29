@@ -2,14 +2,18 @@ import argparse
 from constants import (
     DEFAULT_OUTPUT,
     DEFAULT_UNITS,
+    INC_RADIUS,
+    INITIAL_RADIUS,
     STORES_CSV
 )
 from csv_parser import StoresParser
 import sys
 from util import (
     find_nearest_store,
+    filter_stores,
     format_result,
     geocode,
+    geodetic2ecef,
     validate_args
 )
 
@@ -35,8 +39,10 @@ def find_store(
         units = DEFAULT_UNITS
     if output is None:
         output = DEFAULT_OUTPUT
-    stores = StoresParser(stores_csv).get_dict()
+    sp = StoresParser.get_StoresParser(stores_csv)
     lat_lng = geocode(query)
+    lat_lng_ecef = geodetic2ecef(lat_lng[0], lat_lng[1])
+    stores = filter_stores(sp, lat_lng_ecef, INITIAL_RADIUS, INC_RADIUS)
     result, distance = find_nearest_store(lat_lng, stores, units)
     return format_result(result, distance, units, output)
 

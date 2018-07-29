@@ -1,7 +1,10 @@
 from constants import (
+    A,
+    B,
     DEFAULT_UNITS,
     DISTANCE_PRECISION,
     DISTANCE_RADIUS,
+    ESQ,
     KILOMETERS_TO_MILES,
     OUTPUT,
     STORE_FIELDS,
@@ -14,6 +17,64 @@ from decimal import (
 import geocoder
 import json
 import math
+
+
+def filter_stores(sp, lat_lng_ecef, initial_radius, inc_radius):
+    """Queries StoresParser for stores near lat_lng_ecef within radius.
+
+    Args:
+        sp (obj): StoresParser instance.
+        lat_lng_ecef (float): Converted ECEF lat/long.
+        initial_radius (float): Initial search radius.
+        inc_radius (float): Amount to increment search radius.
+    Returns:
+        List of nearby stores.
+
+    """
+
+    matches = []
+    radius = initial_radius
+    while len(matches) < 1:
+        results = sp.query(lat_lng_ecef, radius)
+        if results is not None:
+            if len(results):
+                matches.extend(results)
+        radius += inc_radius
+    return matches
+
+
+def geodetic2ecef(lat, lon, alt=0):
+    """Convert geodetic coordinates to ECEF.
+
+    Args:
+        lat (float): Latitude.
+        lon (float): Longitude.
+        alt (float, optional): Altitude.
+    Returns:
+        X, Y, Z ECEF coordinates.
+
+    """
+
+    lat, lon = math.radians(lat), math.radians(lon)
+    xi = math.sqrt(1 - ESQ * math.sin(lat))
+    x = (A / xi + alt) * math.cos(lat) * math.cos(lon)
+    y = (A / xi + alt) * math.cos(lat) * math.sin(lon)
+    z = (A / xi * (1 - ESQ) + alt) * math.sin(lat)
+    return x, y, z
+
+
+def euclidean_distance(distance):
+    """Return the approximate Euclidean distance
+    corresponding to the given great circle distance (in km).
+
+    Args:
+        distance (float): Distance (km).
+    Returns:
+        Approximate Euclidean distance.
+
+    """
+
+    return 2 * A * math.sin(distance / (2 * B))
 
 
 def geocode(query):
@@ -131,6 +192,8 @@ def format_result(result, distance, units, output):
 
 def calculate_distance(lat_lng_a, lat_lng_b, units=DEFAULT_UNITS):
     """Calculates distance in (mi or km) between two coords.
+
+    Based on https://gist.github.com/rochacbruno/2883505
 
     Args:
         lat_lng_a (list(float)): Latitude and longitude of point A.
