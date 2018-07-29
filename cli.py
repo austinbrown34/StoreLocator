@@ -1,15 +1,16 @@
 import argparse
-import sys
-import math
-import json
+from constants import (
+    DEFAULT_OUTPUT,
+    DEFAULT_UNITS,
+    STORES_CSV
+)
 from csv_parser import StoresParser
-from constants import STORES_CSV, DEFAULT_OUTPUT, DEFAULT_UNITS
+import sys
 from util import (
-    format_result,
-    calculate_distance,
     find_nearest_store,
-    validate_args,
-    geocode
+    format_result,
+    geocode,
+    validate_args
 )
 
 
@@ -18,6 +19,18 @@ def find_store(
         units=DEFAULT_UNITS,
         output=DEFAULT_OUTPUT,
         stores_csv=STORES_CSV):
+    """Outputs nearest store to address or zip code from CSV of stores.
+
+    Args:
+        query (str, int): Address or zip code.
+        units (str, optional): Distance measurement (mi or km).
+        output (str, optional): Result format (text or json).
+        stores_csv (str): Relative path to csv containing stores data.
+    Returns:
+        Text or json representation of nearest store and distance.
+
+    """
+
     if units is None:
         units = DEFAULT_UNITS
     if output is None:
@@ -29,6 +42,17 @@ def find_store(
 
 
 def main(argv):
+    """Command-line interface to find nearest store from address or zip code.
+
+    Args:
+        --address (str, optional): Address used to find nearest store.
+        --zip (str or int, optional): Zip code used to find nearest store.
+        --units (str, optional): Distance metric (mi or km).
+        --output (str, optional): Result format (text json).
+    Returns:
+        Output from find_store given user input arguments.
+
+    """
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
