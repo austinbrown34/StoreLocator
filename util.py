@@ -1,7 +1,42 @@
 import math
 import json
 from decimal import Decimal, ROUND_HALF_UP
-from constants import DEFAULT_UNITS, DISTANCE_PRECISION
+from constants import (
+    DEFAULT_UNITS,
+    DISTANCE_PRECISION,
+    UNITS,
+    OUTPUT,
+    KILOMETERS_TO_MILES,
+    DISTANCE_RADIUS,
+    STORE_FIELDS
+)
+
+
+def validate_args(args):
+    is_valid = True
+    query = None
+    if args.address is not None:
+        if not isinstance(args.address, str):
+            print('--address must be a string.')
+            is_valid = False
+        query = args.address
+    elif args.zip is not None:
+        if not (isinstance(args.zip, str) or isinstance(args.zip, int)):
+            print('--zip must be a string or an integer.')
+            is_valid = False
+        query = args.zip
+    else:
+        print('--address or --zip must be specified.')
+        is_valid = False
+    if args.units is not None:
+        if args.units not in UNITS:
+            print('--units must be one of the following: {}'.format(UNITS))
+            is_valid = False
+    if args.output is not None:
+        if args.output not in OUTPUT:
+            print ('--output must be one of the following: {}'.format(OUTPUT))
+            is_valid = False
+    return {'is_valid': is_valid, 'query': query}
 
 
 def format_distance(distance, precision=DISTANCE_PRECISION):
