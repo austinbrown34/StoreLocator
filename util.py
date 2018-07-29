@@ -1,25 +1,49 @@
-import math
-import json
-from decimal import Decimal, ROUND_HALF_UP
-import geocoder
 from constants import (
     DEFAULT_UNITS,
     DISTANCE_PRECISION,
-    UNITS,
-    OUTPUT,
-    KILOMETERS_TO_MILES,
     DISTANCE_RADIUS,
-    STORE_FIELDS
+    KILOMETERS_TO_MILES,
+    OUTPUT,
+    STORE_FIELDS,
+    UNITS
 )
+from decimal import (
+    Decimal,
+    ROUND_HALF_UP
+)
+import geocoder
+import json
+import math
 
 
-def geocode(address):
+def geocode(query):
+    """Outputs latitude and longitude for a given address or zip code.
+
+    Args:
+        query (str, int): Address or zip code.
+    Returns:
+        Latitude and longitude (list of floats) or None.
+
+    """
+
     # TODO(Austin) Add optional parameter for provider
-    g = geocoder.google(address)
+    g = geocoder.google(query)
     return g.latlng
 
 
 def validate_args(args):
+    """Validates arguments and constructs query from them.
+
+    Args:
+        args (obj): Arguments object -> address, zip, units, output.
+    Returns:
+        {
+            is_valid: (bool),
+            query: (str/int or None)
+        }
+
+    """
+
     is_valid = True
     query = None
     if args.address is not None:
@@ -47,6 +71,16 @@ def validate_args(args):
 
 
 def format_distance(distance, precision=DISTANCE_PRECISION):
+    """Formats float into rounded Decimal.
+
+    Args:
+        distance (float): Distance value to be formatted.
+        precision (int, optional): Number of decimal places.
+    Returns:
+        Decimal representation of float rounded at given precision.
+
+    """
+
     d = Decimal(distance)
     prec = '0.' + ''.join(
         ['0' if x < (precision - 1) else '1' for x in range(precision)]
@@ -55,6 +89,18 @@ def format_distance(distance, precision=DISTANCE_PRECISION):
 
 
 def format_result(result, distance, units, output):
+    """Formats nearest store and corresponding distance into specified output.
+
+    Args:
+        result (dict or None): Result of nearest store.
+        distance (float or None): Distance to nearest store.
+        units (str): Distance metric (mi or km).
+        output (str): Result format (text or json).
+    Returns:
+        Text or json representation of result and corresponding distance.
+
+    """
+
     if output == 'text':
         if result is None or distance is None:
             return 'Unable to locate closest store.'
@@ -84,6 +130,17 @@ def format_result(result, distance, units, output):
 
 
 def calculate_distance(lat_lng_a, lat_lng_b, units=DEFAULT_UNITS):
+    """Calculates distance in (mi or km) between two coords.
+
+    Args:
+        lat_lng_a (list(float)): Latitude and longitude of point A.
+        lat_lng_b (list(float)): Latitude and longitude of point B.
+        units (str, optional): Distance metric used for calculation (mi or km).
+    Returns:
+        Distance (float) in provided units (mi or km).
+
+    """
+
     lat_a, lng_a = lat_lng_a
     lat_b, lng_b = lat_lng_b
     lat_diff = math.radians(lat_b - lat_a)
@@ -101,6 +158,16 @@ def calculate_distance(lat_lng_a, lat_lng_b, units=DEFAULT_UNITS):
 
 
 def find_nearest_store(lat_lng, stores, units):
+    """Finds store from list of stores that is closest to a given set of coords.
+
+    Args:
+        lat_lng (list(float)): Latitude and longitude being compared to.
+        stores (list(dict)): List of stores to search against.
+        units (str): Distance metric used for comparison.
+    Returns:
+        Nearest store (dict or None) and corresponding distance (float or None).
+
+    """
     result = None
     min_distance = None
     if lat_lng is not None and stores is not None:
