@@ -35,28 +35,28 @@ class TestStoresParser(unittest.TestCase):
 
         self.assertEqual(self.sp.delimiter, ',')
 
-    def test_dict_initial(self):
-        """Test that dict getter returns None initially before get_dict has run.
+    def test_stores_initial(self):
+        """Test that stores getter returns None initially before get_stores has run.
 
         """
 
-        self.assertEqual(self.sp.dict, None)
+        self.assertEqual(self.sp.stores, None)
 
-    def test_get_dict(self):
-        """Test that get_dict parses the csv into a list of 1791 stores.
-
-        """
-
-        dict = self.sp.get_dict()
-        self.assertEqual(len(dict), 1791)
-
-    def test_dict_after_get_dict(self):
-        """Test that dict getter returns list of stores after get_dict has run.
+    def test_get_stores(self):
+        """Test that get_stores parses the csv into a list of 1791 stores.
 
         """
 
-        dict = self.sp.get_dict()
-        self.assertEqual(self.sp.dict, dict)
+        stores = self.sp.get_stores()
+        self.assertEqual(len(stores), 1791)
+
+    def test_stores_after_get_stores(self):
+        """Test that stores getter returns list of stores after get_stores has run.
+
+        """
+
+        stores = self.sp.get_stores()
+        self.assertEqual(self.sp.stores, stores)
 
 if __name__ == '__main__':
     unittest.main()
