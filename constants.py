@@ -2,6 +2,8 @@
 
 KILOMETERS_TO_MILES = 0.621371
 DISTANCE_RADIUS = 6371
+UNITS = ['mi', 'km']
+OUTPUT = ['text', 'json']
 
 # Config
 
@@ -10,8 +12,6 @@ DEFAULT_OUTPUT = 'text'
 DEFAULT_UNITS = 'mi'
 DEFAULT_ENCODING = 'utf-8-sig'
 DEFAULT_DELIMITER = ','
-UNITS = ['mi', 'km']
-OUTPUT = ['text', 'json']
 DISTANCE_PRECISION = 2
 
 # CSV Field Names
