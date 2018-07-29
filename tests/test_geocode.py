@@ -1,5 +1,5 @@
 import unittest
-from geocoding import geocode
+from util import geocode
 
 
 class TestGeocode(unittest.TestCase):

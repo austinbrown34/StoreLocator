@@ -2,10 +2,15 @@ import argparse
 import sys
 import math
 import json
-from geocoding import geocode
 from csv_parser import StoresParser
 from constants import STORES_CSV, DEFAULT_OUTPUT, DEFAULT_UNITS
-from util import format_result, calculate_distance, find_nearest_store, validate_args
+from util import (
+    format_result,
+    calculate_distance,
+    find_nearest_store,
+    validate_args,
+    geocode
+)
 
 
 def find_store(
