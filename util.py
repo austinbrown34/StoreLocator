@@ -55,13 +55,13 @@ def format_result(result, distance, units, output):
             "Closest store is {} - {}, located in {} "
             "at {}, {}, {} {}. ({} {})"
             ).format(
-            result['Store Name'],
-            result['Store Location'],
-            result['County'],
-            result['Address'],
-            result['City'],
-            result['State'],
-            result['Zip Code'],
+            result[STORE_FIELDS['NAME']],
+            result[STORE_FIELDS['LOCATION']],
+            result[STORE_FIELDS['COUNTY']],
+            result[STORE_FIELDS['ADDRESS']],
+            result[STORE_FIELDS['CITY']],
+            result[STORE_FIELDS['STATE']],
+            result[STORE_FIELDS['ZIP_CODE']],
             format_distance(distance),
             units
         )
@@ -69,7 +69,9 @@ def format_result(result, distance, units, output):
         if result is None or distance is None:
             print('Unable to locate closest store.')
             return {}
-        result['Distance'] = '{} {}'.format(format_distance(distance), units)
+        result[STORE_FIELDS['DISTANCE']] = '{} {}'.format(
+            format_distance(distance), units
+        )
         formatted_result = json.dumps(result)
     return formatted_result
 
@@ -77,7 +79,6 @@ def format_result(result, distance, units, output):
 def calculate_distance(lat_lng_a, lat_lng_b, units=DEFAULT_UNITS):
     lat_a, lng_a = lat_lng_a
     lat_b, lng_b = lat_lng_b
-    radius = 6371
     lat_diff = math.radians(lat_b - lat_a)
     lng_diff = math.radians(lng_b - lng_a)
     a = (
@@ -86,9 +87,8 @@ def calculate_distance(lat_lng_a, lat_lng_b, units=DEFAULT_UNITS):
         math.sin(lng_diff / 2) * math.sin(lng_diff / 2)
         )
     c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
-    distance = radius * c
+    distance = DISTANCE_RADIUS * c
     if units == 'mi':
-        KILOMETERS_TO_MILES = 0.621371
         return distance * KILOMETERS_TO_MILES
     return distance
 
@@ -99,7 +99,10 @@ def find_nearest_store(lat_lng, stores, units):
     if lat_lng is not None and stores is not None:
         for store in stores:
             store_lat_lng = [
-                float(store['Latitude']), float(store['Longitude'])
+                float(
+                    store[STORE_FIELDS['LATITUDE']]
+                ),
+                float(store[STORE_FIELDS['LONGITUDE']])
             ]
             store_distance = calculate_distance(lat_lng, store_lat_lng, units)
             if min_distance is None:
