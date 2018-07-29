@@ -52,14 +52,17 @@ def calculate_distance(lat_lng_a, lat_lng_b, units=DEFAULT_UNITS):
 def find_nearest_store(lat_lng, stores, units):
     result = None
     min_distance = None
-    for store in stores:
-        store_lat_lng = [float(store['Latitude']), float(store['Longitude'])]
-        store_distance = calculate_distance(lat_lng, store_lat_lng, units)
-        if min_distance is None:
-            min_distance = store_distance
-            result = store
-        else:
-            if store_distance < min_distance:
+    if lat_lng is not None and stores is not None:
+        for store in stores:
+            store_lat_lng = [
+                float(store['Latitude']), float(store['Longitude'])
+            ]
+            store_distance = calculate_distance(lat_lng, store_lat_lng, units)
+            if min_distance is None:
                 min_distance = store_distance
                 result = store
+            else:
+                if store_distance < min_distance:
+                    min_distance = store_distance
+                    result = store
     return result, min_distance
