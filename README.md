@@ -25,6 +25,14 @@ Install dependencies
 pip install -r requirements.txt
 ```
 
+Add find_store to your path:
+
+```
+mkdir -p ~/bin
+cp find_store ~/bin
+export PATH=$PATH":$HOME/bin"
+```
+
 Populate config variables in constants.py if you not planning on using the provided defaults.
 
 ```
