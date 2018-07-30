@@ -83,6 +83,28 @@ Example
 nose2
 ```
 
+## About StoreLocator
+
+StoreFinder was built to be flexible and scalable enough to allow for the cli functionality to be easily extended, to work with larger datasets than the one provided, and to be included modularly for use outside of the command prompt.
+
+There are many different approaches one can take to find the nearest point in a dataset, and certainly there are improvements that can be made to this approach.
+
+StoreFinder handles addresses and zip codes in very much the same way. Both pass through a geocoding service (default is google but other providers can easily be used) and are converted, if possible, to a latitudinal and longitudinal coordinate.
+
+The parsing of the csv containing store location data is handled via the StoresParser object. The StoresParser reads in the csv and creates a list of stores (dicts). At the same time, the latitudinal and longitudinal coordinates for all of the stores are spatially indexed via a KDTree implementation on the StoresParser object.
+
+By utilizing a KDTree data structure, querying for the nearest store is optimized to an Nlog(n) time complexity, reducing the number of distance calculations needed to calculated to find the nearest store. Building this tree does come with the added cost of space for storing the tree and the time required initially to populate the tree.
+
+To benefit from this approach it was important to make sure that the KDTree did not have to repopulate every time a new search was conducted. To achieve this, the StoresParser has a save method that saves the current instance to a .pkl file once the KDTree is populated. Then, StoresParser has a static method called get_StoresParser that returns either a saved instance of StoresParser, or if no .pkl file exists, returns a new instance after it populates its KDTree.
+
+In order for lat/lon coordinates to be stored in a KDTree and spatially represented accurately, they have to be converted to a new type of coordinates (ECEF X, Y, Z) that can be used to calculate euclidean distances.
+
+Finding the nearest store first queries the tree to receive the closest possible results, then from that list of results, a traditional brute-force and iterative comparison is conducted to find the closest.
+
+Distance calculations are based of the Haversine formula.
+
+https://en.wikipedia.org/wiki/Haversine_formula
+
 ## Authors
 
 * Austin Brown
