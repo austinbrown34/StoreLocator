@@ -1,6 +1,6 @@
 from decimal import Decimal
 import unittest
-from util import (
+from storelocator.util import (
     calculate_distance,
     find_nearest_store,
     format_distance,
