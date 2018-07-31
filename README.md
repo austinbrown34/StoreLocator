@@ -11,7 +11,7 @@ To get started clone this repo, and if you don't want to install all the depende
 To avoid potential conflicts, create a virtual environment and activate it before following installation instructions.
 
 ```
-virtualenv env
+virtualenv -p python3 env
 . env/bin/activate
 ```
 
@@ -19,19 +19,11 @@ virtualenv env
 
 Follow these steps to setup StoreLocator.
 
-Install dependencies
-
 ```
-pip install -r requirements.txt
+pip install storelocator
 ```
 
-Add find_store to your path:
-
-```
-mkdir -p ~/bin
-cp find_store ~/bin
-export PATH=$PATH":$HOME/bin"
-```
+### Optional Setup
 
 Populate config variables in constants.py if you not planning on using the provided defaults.
 
@@ -86,6 +78,8 @@ Example
 ```
 
 ## Running the tests
+
+If you have cloned this repo and installed dependencies from requirements.txt you can run tests like so:
 
 ```
 nose2
