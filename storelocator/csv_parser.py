@@ -1,5 +1,5 @@
 import codecs
-from constants import (
+from storelocator.constants import (
     DEFAULT_DELIMITER,
     DEFAULT_ENCODING,
     STORE_FIELDS
@@ -9,7 +9,7 @@ import numpy
 import os
 import pickle
 from scipy.spatial import KDTree
-from util import (
+from storelocator.util import (
     euclidean_distance,
     geodetic2ecef
 )

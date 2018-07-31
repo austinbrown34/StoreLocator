@@ -1,4 +1,4 @@
-from constants import (
+from storelocator.constants import (
     A,
     B,
     DEFAULT_UNITS,

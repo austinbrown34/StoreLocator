@@ -1,3 +1,9 @@
+import pkg_resources
+
+
+path = 'csv/store-locations.csv'
+DEFAULT_CSV = pkg_resources.resource_filename(__name__, path)
+
 # Don't Change
 
 KILOMETERS_TO_MILES = 0.621371
@@ -12,7 +18,7 @@ ESQ = 6.69437999014 * 0.001
 
 # Config
 
-STORES_CSV = 'store-locations.csv'
+STORES_CSV = DEFAULT_CSV
 DEFAULT_OUTPUT = 'text'
 DEFAULT_UNITS = 'mi'
 DEFAULT_ENCODING = 'utf-8-sig'

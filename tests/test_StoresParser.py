@@ -1,4 +1,5 @@
-from csv_parser import StoresParser
+from storelocator.csv_parser import StoresParser
+from storelocator.constants  import STORES_CSV
 import unittest
 
 
@@ -12,14 +13,14 @@ class TestStoresParser(unittest.TestCase):
 
         """
 
-        self.sp = StoresParser('store-locations.csv')
+        self.sp = StoresParser(STORES_CSV)
 
     def test_file_path(self):
         """Test that file_path getter returns correct file_path.
 
         """
 
-        self.assertEqual(self.sp.file_path, 'store-locations.csv')
+        self.assertEqual(self.sp.file_path, STORES_CSV)
 
     def test_encoding(self):
         """Test that encoding getter returns correct encoding.

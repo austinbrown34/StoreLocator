@@ -1,5 +1,5 @@
 import unittest
-from util import geocode
+from storelocator.util import geocode
 
 
 class TestGeocode(unittest.TestCase):
